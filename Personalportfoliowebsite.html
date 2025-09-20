@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== GLOBAL ===== */
+    * {margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
+    body {background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#f8fafc;line-height:1.8;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    h1,h2{font-family:"Orbitron",sans-serif;letter-spacing:1px;}
+    section{min-height:100vh;padding:120px 8% 80px;}
+    .section-title{text-align:center;font-size:2.8rem;margin-bottom:3rem;
+      background:linear-gradient(to right,#ff0080,#7928ca,#2af598);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;}
+
+    /* ===== NAVBAR ===== */
+    nav{position:fixed;width:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);
+      display:flex;justify-content:space-between;align-items:center;padding:1rem 8%;
+      z-index:1000;box-shadow:0 0 15px rgba(255,0,128,0.4);}
+    nav h1{font-size:1.8rem;background:linear-gradient(45deg,#00f5ff,#ff0080);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;}
+    nav ul{display:flex;list-style:none;}
+    nav ul li{margin-left:25px;}
+    nav ul li a{font-weight:500;transition:color .3s,text-shadow .3s;padding:5px 8px;border-radius:6px;}
+    nav ul li a:hover,nav ul li a.active{color:#ff0080;text-shadow:0 0 12px #ff0080;background:rgba(255,255,255,0.1);}
+
+    /* ===== PROFILE ===== */
+    .profile{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+    .profile img{width:180px;height:180px;border-radius:50%;border:5px solid #ff0080;margin-bottom:1rem;
+      box-shadow:0 0 25px #ff0080;transition:.4s;}
+    .profile img:hover{transform:scale(1.15) rotate(3deg);box-shadow:0 0 40px #00f5ff;}
+    .profile h2{font-size:2.2rem;margin-bottom:.6rem;background:linear-gradient(45deg,#00f5ff,#ff0080);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .profile p{max-width:700px;color:#cbd5e1;font-size:1.1rem;}
+
+    /* ===== SKILLS ===== */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;text-align:center;}
+    .skill{background:rgba(255,255,255,0.05);padding:30px;border-radius:15px;font-weight:500;
+      transition:.3s;position:relative;overflow:hidden;}
+    .skill::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;
+      background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);transition:.6s;}
+    .skill:hover{transform:translateY(-12px) scale(1.05);box-shadow:0 0 25px #7928ca;background:rgba(255,255,255,0.1);}
+    .skill:hover::after{left:100%;}
+
+    /* ===== TIMELINE ===== */
+    .timeline{position:relative;margin:2rem 0;}
+    .timeline::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;
+      background:linear-gradient(to bottom,#ff0080,#00f5ff);transform:translateX(-50%);}
+    .timeline-item{position:relative;width:45%;padding:1.2rem;background:rgba(255,255,255,0.05);
+      border-radius:15px;margin:1.5rem 0;backdrop-filter:blur(10px);transition:.3s;}
+    .timeline-item.left{left:0;} .timeline-item.right{left:55%;}
+    .timeline-item h3{color:#00f5ff;margin-bottom:.5rem;}
+    .timeline-item img{width:100%;border-radius:10px;margin-bottom:.7rem;}
+    .timeline-item:hover{transform:scale(1.05);box-shadow:0 0 20px #ff0080;}
+
+    /* ===== PROJECTS ===== */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;}
+    .project{background:rgba(255,255,255,0.05);padding:20px;border-radius:15px;transition:.3s;}
+    .project:hover{transform:scale(1.07);box-shadow:0 0 25px #2af598;}
+    .project h3{background:linear-gradient(45deg,#2af598,#ff0080);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem;}
+
+    /* ===== CONTACT ===== */
+    .contact-form{max-width:550px;margin:auto;display:flex;flex-direction:column;gap:18px;padding:30px;
+      background:rgba(255,255,255,0.05);border-radius:15px;box-shadow:0 0 20px rgba(0,0,0,0.5);}
+    .contact-form input,.contact-form textarea{padding:14px;border:none;border-radius:8px;outline:none;
+      background:rgba(255,255,255,0.1);color:white;transition:.3s;}
+    .contact-form input:focus,.contact-form textarea:focus{box-shadow:0 0 10px #00f5ff;}
+    .contact-form button{padding:14px;border:none;border-radius:8px;
+      background:linear-gradient(45deg,#ff0080,#00f5ff);color:#0f0c29;font-weight:bold;
+      cursor:pointer;transition:.3s;}
+    .contact-form button:hover{transform:scale(1.05);box-shadow:0 0 20px #ff0080;}
+
+    /* ===== ANIMATIONS ===== */
+    .reveal{opacity:0;transform:translateY(60px);transition:all .9s ease;}
+    .reveal.active{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){
+      nav ul{display:none;}
+      .timeline::before{left:10px;}
+      .timeline-item{width:100%;left:0!important;margin-left:20px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <h1>MyPortfolio</h1>
+    <ul>
+      <li><a href="#profile" class="nav-link">Profile</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#education" class="nav-link">Education</a></li>
+      <li><a href="#achievements" class="nav-link">Achievements</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Profile -->
+  <section id="profile" class="profile">
+    <img src="peter.jpg" alt="Profile Picture">
+    <h2>Peter Parker </h2>
+    <p>A motivated and enthusiastic student currently pursuing a degree in computer science, with a strong passion for programming and web development.<br>
+Skilled in creating responsive and interactive websites using HTML, CSS, JavaScript, and modern frameworks like React.js.<br>
+Eager to learn and apply new technologies in real-world projects, with hands-on experience in both front-end and back-end development.<br>
+Committed to building practical and innovative digital solutions while continuously improving coding skills, problem-solving abilities, and technical knowledge.<br>
+Always ready to take on challenges, collaborate on projects, and explore opportunities in the world of web development and software engineering.
+</p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill">HTML5</div><div class="skill">CSS3</div><div class="skill">JavaScript</div>
+      <div class="skill">React</div><div class="skill">Node.js</div><div class="skill">Python</div>
+      <div class="skill">C/C++</div><div class="skill">Java</div><div class="skill">SQL</div>
+      <div class="skill">Git & GitHub</div><div class="skill">UI/UX Design</div><div class="skill">Bootstrap</div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education">
+    <h2 class="section-title">Education</h2>
+    <div class="timeline">
+      <div class="timeline-item left reveal">
+        <img src="ryan school.jpg" alt="College">
+        <h3>2007 - 2015</h3>
+        <p>Elementary School - Ryan International</p>
+      </div>
+      <div class="timeline-item right reveal">
+        <img src="podar.jpg" alt="College">
+        <h3>2015 - 2017</h3>
+        <p>Higher School - LPHS Lilavatibai Podar High School</p>
+      </div>
+      <div class="timeline-item left reveal">
+        <img src="saboo.jpg" alt="College">
+        <h3>2017- 2020</h3>
+        <p>Diploma in Computer Engineering - M.H Saboo Siddik Polytechnic </p>
+      </div>
+      <div class="timeline-item right reveal">
+        <img src="kal.jpg" alt="College">
+        <h3>2020 - 2023</h3>
+        <p>Btech. Computer Engineering - A.R Kalsekar college of Engineering & Technology</p>
+      </div>
+      <div class="timeline-item left reveal">
+        <img src="kj.jpg" alt="College">
+        <h3>2025 - Present</h3>
+        <p>Mtech. AI/ML - KJ Somaiya College of Engineering</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements -->
+  <section id="achievements">
+    <h2 class="section-title">Achievements</h2>
+    <div class="timeline">
+      <div class="timeline-item left reveal"><h3>2007</h3><p>🎓 Started primary school, building the foundation for learning and curiosity.</p></div>
+      <div class="timeline-item right reveal"><h3>2010</h3><p>🏅 Won the best student award in elementary school for academic excellence.</p></div>
+      <div class="timeline-item left reveal"><h3>2012</h3><p>🖌️ Participated in a school art competition and won first prize.</p></div>
+      <div class="timeline-item right reveal"><h3>2013</h3><p>⚽ Represented the school in inter-school football tournament.</p></div>
+      <div class="timeline-item left reveal"><h3>2014</h3><p>📚 Achieved top grades in middle school exams, recognized for consistency.</p></div>
+      <div class="timeline-item right reveal"><h3>2015</h3><p>🎤 Won a public speaking competition at school level.</p></div>
+      <div class="timeline-item left reveal"><h3>2016</h3><p>🏆 Selected for science fair project, showcasing innovative ideas.</p></div>
+      <div class="timeline-item right reveal"><h3>2017</h3><p>🎶 Participated in school cultural fest, performed music and drama.</p></div>
+      <div class="timeline-item left reveal"><h3>2018</h3><p>💻 Developed a basic website/project using HTML and CSS for the first time.</p></div>
+      <div class="timeline-item right reveal"><h3>2019</h3><p>🥇 Secured first position in district-level coding competition.</p></div>
+      <div class="timeline-item left reveal"><h3>2020</h3><p>📱 Built a mobile app project during online learning period</p></div>
+      <div class="timeline-item right reveal"><h3>2021</h3><p>🌐 Created and launched a personal portfolio website as part of studies.d</p></div>
+      <div class="timeline-item left reveal"><h3>2022</h3><p>💡 Participated in hackathons and coding challenges, gaining practical experience.</p></div>
+      <div class="timeline-item right reveal"><h3>2023</h3><p>🏅 Recognized in college for academic excellence and extracurricular participation.</p></div>
+      <div class="timeline-item left reveal"><h3>2024</h3><p>🔧 Developed full-stack projects, showcasing skills in front-end and back-end technologies.</p></div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      <div class="project reveal"><h3>Portfolio Website</h3><p>Responsive animated portfolio.</p></div>
+      <div class="project reveal"><h3>AI Chatbot</h3><p>Chatbot with NLP.</p></div>
+      <div class="project reveal"><h3>Weather App</h3><p>API integrated weather forecast.</p></div>
+      <div class="project reveal"><h3>Task Manager</h3><p>To-do app with Node.js backend.</p></div>
+      <div class="project reveal"><h3>E-commerce Frontend</h3><p>Responsive UI for store.</p></div>
+      <div class="project reveal"><h3>Blog CMS</h3><p>Blog platform with Markdown.</p></div>
+      <div class="project reveal"><h3>Music Player</h3><p>Web player with JS effects.</p></div>
+      <div class="project reveal"><h3>Portfolio CMS</h3><p>Dynamic portfolio manager.</p></div>
+      <div class="project reveal"><h3>Chat App</h3><p>Realtime chat using WebSockets.</p></div>
+      <div class="project reveal"><h3>Quiz Game</h3><p>Interactive web quiz app.</p></div>
+      <div class="project reveal"><h3>Finance Tracker</h3><p>Expense tracking dashboard.</p></div>
+      <div class="project reveal"><h3>AI Image Classifier</h3><p>ML model for images.</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <form class="contact-form reveal">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button type="submit">Send Message ✨</button>
+    </form>
+  </section>
+
+  <script>
+    // Scroll reveal animation
+    function reveal() {
+      var reveals=document.querySelectorAll(".reveal");
+      for (var i=0;i<reveals.length;i++) {
+        var windowHeight=window.innerHeight;
+        var elementTop=reveals[i].getBoundingClientRect().top;
+        var elementVisible=150;
+        if (elementTop<windowHeight-elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+    window.addEventListener("scroll",reveal); reveal();
+
+    // Smooth scroll
+    document.querySelectorAll('nav a').forEach(link=>{
+      link.addEventListener('click',function(e){
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    // Navbar active link highlight
+    const sections=document.querySelectorAll("section");
+    const navLinks=document.querySelectorAll(".nav-link");
+    window.addEventListener("scroll",()=>{
+      let current="";
+      sections.forEach(sec=>{
+        const secTop=sec.offsetTop-150;
+        if(scrollY>=secTop){current=sec.getAttribute("id");}
+      });
+      navLinks.forEach(link=>{
+        link.classList.remove("active");
+        if(link.getAttribute("href")==="#"+current){link.classList.add("active");}
+      });
+    });
+  </script>
+</body>
+</html>
